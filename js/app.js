@@ -89,17 +89,22 @@ function showModalImage(index) {
   var item = modalImages[index];
   if (!item) return;
 
-  /* Re-trigger CSS animation */
-  modalImg.style.animation = 'none';
-  void modalImg.offsetWidth;
-  modalImg.style.animation = '';
-
-  modalImg.src       = item.src;
-  modalImg.className = 'modal-img ' + item.orient;
-
+  /* Update counter immediately */
   if (modalCount) {
-    modalCount.textContent = (index + 1) + ' / ' + modalImages.length;
+    modalCount.textContent = (index + 1) + ' / ' + modalImages.length;
   }
+
+  /* Fade out → swap src → fade in.
+     This prevents the same image flashing when navigating quickly,
+     because the src change happens after the element is already invisible. */
+  modalImg.style.transition = 'opacity 0.15s ease';
+  modalImg.style.opacity    = '0';
+
+  setTimeout(function () {
+    modalImg.src       = item.src;
+    modalImg.className = 'modal-img ' + item.orient;
+    modalImg.style.opacity = '1';
+  }, 160);
 }
 
 function modalNext() {
