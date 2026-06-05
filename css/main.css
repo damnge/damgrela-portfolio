@@ -801,7 +801,7 @@ img  { display: block; max-width: 100%; }
   .about-text {
     width: 100%;
     max-width: 100%;
-    padding: 32px 24px 40px 24px;
+    padding: 32px 24px 40px 0; /* left comes from main-content, right added here */
   }
 
   /* Portrait: right edge flush with viewport */
