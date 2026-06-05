@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Photography portfolio of Damian Grela — street, film, and documentary work from all over the world.">
+  <meta name="author" content="Damian Grela">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Damian Grela — Photographer">
+  <meta property="og:description" content="Street, film, and atmospheric photography by Damian Grela, based in Iceland.">
+  <meta property="og:image" content="https://damgrela.com/public/og.jpg">
+  <meta property="og:url" content="https://damgrela.com/">
+  <meta property="og:site_name" content="Damian Grela">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Damian Grela — Photographer">
+  <meta name="twitter:description" content="Street, film, and atmospheric photography by Damian Grela, based in Iceland.">
+  <meta name="twitter:image" content="https://damgrela.com/public/og.jpg">
+  <title>Damian Grela — Photographer</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="public/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="public/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="public/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="public/favicon-192x192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── HOMEPAGE ONLY ── */
+    html, body { height: 100%; overflow: hidden; }
+
+    .home-stage {
+      position: fixed;
+      /* Match sidebar padding exactly: 48px top, leave ~60px bottom for social */
+      top: 48px;
+      bottom: 60px;
+      left: var(--sidebar-w);
+      right: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Same horizontal padding as .main-content */
+      padding: 0 48px 0 32px;
+    }
+
+    .home-photo {
+      position: absolute;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      opacity: 0;
+      /* Longer, smoother fade — ease-in-out so it doesn't snap */
+      transition: opacity 1.1s ease-in-out;
+      pointer-events: none;
+      display: block;
+      will-change: opacity;
+    }
+
+    .home-photo.is-visible { opacity: 1; }
+
+    /* Hint label — bottom right, fades out after first click */
+    .home-hint {
+      position: fixed;
+      bottom: 20px;
+      right: 36px;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      opacity: 1;
+      transition: opacity 0.6s var(--ease);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .home-hint.is-hidden { opacity: 0; }
+
+    @media (max-width: 768px) {
+      .home-stage {
+        left: 0;
+        top: 56px;
+        bottom: 0;
+        padding: 20px;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <script src="js/nav.js"></script>
+
+  <div class="home-stage" id="home-stage">
+    <img class="home-photo" id="home-photo-a" src="" alt="">
+    <img class="home-photo" id="home-photo-b" src="" alt="">
+  </div>
+  <p class="home-hint" id="home-hint">Click to advance</p>
+
+  <div class="loader" id="loader"><div class="loader-dot"></div></div>
+  <p class="site-copy">©Damian Grela 2026</p>
+
+  <script>
+  (function () {
+
+    /* Hide loader immediately — homepage slideshow handles its own timing */
+    var loader = document.getElementById('loader');
+    if (loader) {
+      loader.classList.add('is-hidden');
+      setTimeout(function () {
+        if (loader.parentNode) loader.parentNode.removeChild(loader);
+      }, 700);
+    }
+
+    var all = [
+      'img/1.jpg','img/2.jpg','img/3.jpg','img/4.jpg','img/5.jpg',
+      'img/6.jpg','img/7.jpg','img/8.jpg','img/9.jpg','img/10.jpg',
+      'img/11.jpg','img/12.jpg','img/13.jpg','img/14.jpg','img/15.jpg',
+      'img/16.jpg','img/17.jpg','img/18.jpg','img/19.jpg','img/20.jpg',
+      'img/21.jpg','img/22.jpg','img/23.jpg','img/24.jpg','img/25.jpg',
+      'img/26.jpg','img/27.jpg','img/28.jpg','img/29.jpg','img/30.jpg',
+      'img/31.jpg','img/32.jpg','img/33.jpg','img/34.jpg',
+      'img/i1.jpg','img/i2.jpg','img/i3.jpg','img/i4.jpg','img/i5.jpg',
+      'img/i6.jpg','img/i7.jpg','img/i8.jpg','img/i10.jpg','img/i11.jpg',
+      'img/i13.jpg','img/i14.jpg','img/i15.jpg','img/i16.jpg','img/i17.jpg',
+      'img/i18.jpg','img/i21.jpg','img/i22.jpg','img/i40.jpg','img/i50.jpg',
+      'img/i70.jpg','img/i80.jpg','img/i100.jpg',
+      'img/a1.jpg','img/a2.jpg','img/a3.jpg','img/a4.jpg','img/a5.jpg',
+      'img/a6.jpg','img/a7.jpg','img/a8.jpg','img/a9.jpg','img/a10.jpg',
+      'img/a11.jpg','img/a12.jpg','img/a13.jpg','img/a14.jpg','img/a15.jpg',
+      'img/u1.jpg','img/u2.jpg','img/u3.jpg','img/u4.jpg','img/u5.jpg',
+      'img/u6.jpg','img/u7.jpg','img/u8.jpg','img/u9.jpg','img/u11.jpg',
+      'img/u12.jpg','img/u13.jpg','img/u14.jpg','img/u15.jpg','img/u16.jpg',
+      'img/0d.jpg','img/1d.jpg','img/2d.jpg','img/3d.jpg','img/4d.jpg',
+      'img/5d.jpg','img/6d.jpg','img/7d.jpg','img/8d.jpg','img/9d.jpg',
+      'img/10d.jpg','img/11d.jpg','img/12d.jpg','img/13d.jpg'
+    ];
+
+    /* Fisher-Yates shuffle */
+    for (var i = all.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = all[i]; all[i] = all[j]; all[j] = tmp;
+    }
+
+    /* Two image elements for crossfade — A and B swap roles each transition */
+    var imgA    = document.getElementById('home-photo-a');
+    var imgB    = document.getElementById('home-photo-b');
+    var stage   = document.getElementById('home-stage');
+    var current = 0;
+    var active  = imgA;   /* which element is currently visible */
+    var inactive= imgB;   /* which element is loading next */
+    var timer;
+    var busy    = false;
+
+    function show(src, onDone) {
+      if (busy) return;
+      busy = true;
+
+      /* Load into the hidden element */
+      inactive.src = src;
+
+      function crossfade() {
+        /* Fade in the new one */
+        inactive.classList.add('is-visible');
+        /* Fade out the old one */
+        active.classList.remove('is-visible');
+
+        /* After transition completes, swap roles */
+        setTimeout(function () {
+          var tmp = active;
+          active   = inactive;
+          inactive = tmp;
+          busy = false;
+          if (onDone) onDone();
+        }, 1150); /* slightly longer than transition duration */
+      }
+
+      if (inactive.complete && inactive.naturalWidth) {
+        crossfade();
+      } else {
+        inactive.onload  = crossfade;
+        inactive.onerror = crossfade;
+      }
+
+      /* Preload the one after */
+      var pre = new Image();
+      pre.src = all[(current + 1) % all.length];
+    }
+
+    var hint = document.getElementById('home-hint');
+    function dismissHint() {
+      if (hint) { hint.classList.add('is-hidden'); hint = null; }
+    }
+
+    function next() {
+      dismissHint();
+      current = (current + 1) % all.length;
+      show(all[current]);
+      /* Preload next */
+      var pre = new Image();
+      pre.src = all[(current + 1) % all.length];
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(next, 5500);
+    }
+
+    stage.addEventListener('click', function (e) {
+      if (e.target.closest('a, button, .sidebar, .mobile-nav, .mobile-menu')) return;
+      clearInterval(timer);
+      if (!busy) {
+        next();
+        resetTimer();
+      }
+    });
+
+    /* Start: load first image into A, make it visible */
+    imgA.src = all[0];
+    function startFirst() {
+      imgA.classList.add('is-visible');
+      resetTimer();
+    }
+    if (imgA.complete && imgA.naturalWidth) { startFirst(); }
+    else { imgA.onload = startFirst; imgA.onerror = startFirst; }
+
+  }());
+  </script>
+
+</body>
+</html>

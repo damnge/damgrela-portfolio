@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-dark:  #333;
+  --color-mid:   #AFB1B0;
+  --color-light: #fff;
+  --font-main:   'Montserrat', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  height: 100%; margin: 0;
+}
+
+body {
+  margin: 0; width: 100%; min-height: 100%;
+  font-family: var(--font-main); font-size: 16px;
+  min-width: 300px; background-color: rgba(255,255,255,0.678); letter-spacing: 1.5px;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar { width: 4px; background-color: transparent; }
+::-webkit-scrollbar-track { background-color: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-dark); }
+::selection { background: var(--color-dark); color: #fff; }
+
+#page-container { position: relative; padding-bottom: 50px; width: 100%; }
+
+#header { width: 100%; height: 100px; margin: 0; padding: 0; position: relative; }
+
+.logo { margin: 45px 0 0 45px; max-width: 205px; }
+
+.back { display: inline-block; cursor: pointer; position: absolute; right: 45px; top: 46px; font-size: 20px; text-transform: uppercase; transition: 0.5s; }
+.back a { text-decoration: none; color: var(--color-mid); transition: 0.5s; }
+.back::after { content: ''; display: block; height: 2px; width: 0; background: transparent; transition: width .5s ease, background-color .5s ease; }
+.back:hover::after { width: 100%; background: var(--color-dark); }
+.back a:hover { color: var(--color-dark); }
+
+#form-container { background-color: var(--color-light); margin: 80px auto 0; max-width: 600px; border: 0.5px solid rgb(224,223,223); }
+
+.contact-title { font-weight: 700; text-transform: uppercase; font-size: 28px; color: var(--color-dark); letter-spacing: 0.2rem; text-align: center; padding: 20px 0; }
+
+.contact-form { display: block; width: 400px; margin: 0 auto; }
+
+input:focus, textarea:focus, select:focus { outline: 0; }
+
+label { font-size: 14px; padding: 5px; color: rgb(83,83,83); text-transform: uppercase; }
+
+input[type=text], input[type=email], select, textarea {
+  width: 100%; padding: 10px; border: 0.5px solid #ccc;
+  box-sizing: border-box; margin: 5px 0 15px;
+  resize: vertical; font-size: 16px; font-family: var(--font-main);
+}
+textarea { height: 150px; }
+
+.center-btn { text-align: right; }
+
+.btn-send {
+  cursor: pointer; border: none; text-transform: uppercase;
+  color: #fff; outline: none; padding: 10px 35px;
+  background: var(--color-dark); margin-bottom: 50px;
+  font-size: 14px; letter-spacing: 1px;
+  box-shadow: inset 0 0 0 0 lightgray; transition: box-shadow ease-out 0.6s;
+}
+.btn-send:hover { box-shadow: inset 0 0 0 50px lightgray; }
+
+#status { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; padding: 15px; }
+#status.correct { background-color: rgb(46,164,79); color: white; font-weight: bold; animation: statusFade 3s ease forwards; }
+#status.wrong   { background-color: rgb(231,54,23);  color: white; font-weight: bold; animation: statusFade 3s ease forwards; }
+@keyframes statusFade { 0%, 90% { opacity: 1; pointer-events: all; } 100% { opacity: 0; pointer-events: none; } }
+
+.footer { height: 100px; width: 100%; padding-top: 100px; text-align: center; }
+.social-media { margin-bottom: 25px; }
+
+.insta { font-size: 28px; padding: 8px; color: #555; text-decoration: none; transition: ease-out 0.3s; }
+.insta:hover { color: lightgray; }
+
+.sign { font-size: 14px; color: #555; text-align: center; padding-bottom: 10px; }
+
+#email { font-size: 16px; text-decoration: none; color: var(--color-dark); transition: ease-in 0.3s; }
+
+.mailto-link { position: relative; padding: 8px 0; }
+.mailto-message {
+  top: 1px; left: 50%; margin-bottom: -5px; transform: translate(-50%, -100%);
+  position: absolute; display: none; width: auto; white-space: nowrap;
+  font-size: 12px; background-color: var(--color-dark); color: white; padding: 2px 6px; border-radius: 2px;
+}
+.mailto-message::before {
+  content: ''; top: 100%; left: 50%; border: solid transparent;
+  height: 0; width: 0; position: absolute; pointer-events: none;
+  border-top-color: var(--color-dark); border-width: 4px; margin-left: -4px;
+}
+.mailto-link:hover .mailto-message,
+.mailto-link:focus .mailto-message,
+.mailto-link:focus-within .mailto-message { display: block; }
+
+.loader { position: fixed; inset: 0; background: #fff; z-index: 100; }
+.loader img { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+@media (max-width: 500px) {
+  .back { display: none; } #header { height: 50px; }
+  .logo { display: block; margin: 45px auto 0; }
+  #form-container { margin: 50px auto 0; max-width: 320px; }
+  .contact-form { width: 270px; margin-bottom: 15px; }
+  .contact-title { font-size: 20px; } label { font-size: 13px; padding: 5px; }
+  .btn-send { width: 100%; font-size: 14px; }
+}
+@media (max-width: 350px) {
+  #form-container { max-width: 290px; } .contact-title { font-size: 18px; }
+  .contact-form { max-width: 230px; margin-bottom: 30px; } label { font-size: 12px; padding: 2px; }
+  .center-btn { text-align: center; } .btn-send { width: 100%; } #status { width: 260px; }
+  .footer { padding-top: 80px; }
+}
+@media (min-height: 800px) and (max-width: 412px) {
+  .footer { padding-top: 20px; } .contact-form { width: 280px; } #form-container { width: 340px; }
+}

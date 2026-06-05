@@ -1,0 +1,836 @@
+/* =============================================
+   main.css — Damian Grela Photography Portfolio
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500&display=swap');
+
+/* ----------- CUSTOM PROPERTIES ----------- */
+:root {
+  --bg:         #ffffff;
+  --ink:        #1c1c1c;
+  --mid:        #666;      /* was #999 — better contrast */
+  --font:       'Commissioner', system-ui, sans-serif;
+
+  --sidebar-w:  240px;     /* full — homepage */
+  --sidebar-sm: 180px;     /* shrunk — category pages */
+
+  --logo-h:     50px;      /* logo height — homepage */
+  --logo-sm:    34px;      /* logo height — category pages */
+
+  --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+  --t:          0.45s;
+}
+
+/* ----------- RESET ----------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  /* Page transition — fade in on load */
+  animation: pageIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Fade out class applied before navigation */
+body.is-leaving {
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a    { color: inherit; text-decoration: none; }
+img  { display: block; max-width: 100%; }
+
+::selection               { background: var(--ink); color: var(--bg); }
+::-webkit-scrollbar       { width: 3px; background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--mid); border-radius: 2px; }
+
+/* ----------- SIDEBAR ----------- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  padding: 53px 40px 53px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  z-index: 50;
+  overflow: hidden;
+}
+
+/* Logo */
+.sidebar-logo {
+  display: block;
+  margin-bottom: 48px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.sidebar-logo img {
+  width: 200px;
+  height: auto;
+  display: block;
+}
+
+/* Nav container — flex column, even spacing */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+/* Nav labels */
+.nav-group { margin-bottom: 0; }
+
+.nav-label {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 400;
+  cursor: pointer;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.nav-label:hover,
+.nav-label.active { color: var(--ink); }
+
+/* Arrow chevron */
+.nav-arrow {
+  display: inline-block;
+  font-style: normal;
+  font-size: 7px;
+  transition: transform 0.4s var(--ease);
+  line-height: 1;
+}
+
+.nav-label.is-open .nav-arrow { transform: rotate(90deg); }
+
+/* Submenu */
+.nav-sub {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    max-height 0.5s var(--ease),
+    opacity    0.4s var(--ease),
+    transform  0.45s var(--ease);
+}
+
+.nav-sub.is-open {
+  max-height: 300px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav-sub a,
+.nav-link {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  padding: 6px 0;
+  transition: color 0.15s;
+  display: block;
+  white-space: nowrap;
+}
+
+.nav-sub a:hover,
+.nav-link:hover,
+.nav-sub a.active,
+.nav-link.active { color: var(--ink); }
+
+.nav-standalone { margin-top: 0; }
+
+/* Social icons */
+.sidebar-social {
+  margin-top: auto;
+  display: flex;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+
+.sidebar-social a {
+  color: var(--mid);
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-social a:hover { color: var(--ink); }
+
+.sidebar-social svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ----------- MAIN CONTENT ----------- */
+.main-content {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  padding: 52px 48px 52px 32px;
+}
+
+/* ----------- GALLERY GRID — CSS columns, natural masonry ----------- */
+.gallery-grid {
+  column-count: 3;
+  column-gap: 10px;
+}
+
+.gallery-grid.cols-2 {
+  column-count: 2;
+}
+
+.gallery-grid figure {
+  break-inside: avoid;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.gallery-grid figure img {
+  width: 100%;
+  display: block;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  transform: translateY(6px);
+  background: #ddd8d0;
+  min-height: 40px;
+}
+
+.gallery-grid figure img.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-grid figure img:hover { opacity: 0.88; }
+
+/* ----------- REPORTAGE INTRO ----------- */
+.reportage-intro {
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+
+.reportage-intro h2 {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+
+.reportage-intro p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--mid);
+  letter-spacing: 0.02em;
+}
+
+/* ----------- MODAL ----------- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  flex-direction: column;
+}
+
+.modal.is-open { display: flex; }
+
+/* Top bar — counter + close */
+.modal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 36px;
+  flex-shrink: 0;
+}
+
+.modal-counter {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--mid);
+}
+
+.modal-close {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  cursor: pointer;
+  transition: color 0.2s;
+  padding-bottom: 2px;
+  position: relative;
+}
+
+.modal-close::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--ink);
+  transition: width 0.35s var(--ease);
+}
+
+.modal-close:hover { color: var(--ink); }
+.modal-close:hover::after { width: 100%; }
+
+/* Image area */
+.modal-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 36px;
+}
+
+.modal-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  animation: fadeModal 0.35s var(--ease);
+}
+
+@keyframes fadeModal { from { opacity: 0; } to { opacity: 1; } }
+
+/* Bottom bar — Prev / Next */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 36px;
+  flex-shrink: 0;
+}
+
+.modal-prev,
+.modal-next {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  cursor: pointer;
+  transition: color 0.2s;
+  user-select: none;
+  padding: 4px 0;
+}
+
+.modal-prev:hover,
+.modal-next:hover { color: var(--ink); }
+
+/* ----------- LOADER ----------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s var(--ease);
+}
+
+.loader.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  /* after transition ends, pull it fully out of the stacking context */
+  transition: opacity 0.6s var(--ease), visibility 0s 0.6s;
+  visibility: hidden;
+}
+
+.loader-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--mid);
+  border-radius: 50%;
+  animation: pulse 1.4s var(--ease) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.2; transform: scale(0.75); }
+  50%       { opacity: 1;   transform: scale(1); }
+}
+
+/* ----------- COPYRIGHT ----------- */
+.site-copy {
+  position: fixed;
+  bottom: 14px;
+  left: 40px;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--mid);
+  z-index: 10;
+}
+
+/* ----------- ABOUT PAGE ----------- */
+
+/* Desktop: overflow hidden so portrait bleeds off right edge */
+@media (min-width: 769px) {
+  .about-page { overflow: hidden; }
+}
+
+.about-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 104px);
+  /* right padding reserves column for the absolute portrait */
+  padding-right: 340px;
+}
+
+.about-text {
+  width: 420px;
+  max-width: 100%;
+  position: relative;
+  z-index: 2;
+  /* flexbox justify-content:center on the wrap centres this naturally */
+}
+
+.about-text h4 {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.about-text p {
+  font-size: 13px;
+  line-height: 1.95;
+  color: var(--mid);
+  letter-spacing: 0.02em;
+  max-width: 440px;
+}
+
+.about-links {
+  display: flex;
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.about-links a {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  transition: color 0.2s;
+  padding-bottom: 2px;
+  position: relative;
+}
+
+.about-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--ink);
+  transition: width 0.3s var(--ease);
+}
+
+.about-links a:hover { color: var(--ink); }
+.about-links a:hover::after { width: 100%; }
+
+/* Portrait — fixed to viewport right edge */
+.about-portrait {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 320px;
+  z-index: 1;
+}
+
+.about-portrait img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 860px) {
+  .about-wrap        { flex-direction: column; align-items: flex-start; padding-bottom: 360px; }
+  .about-text        { max-width: 100%; width: 100%; }
+  .about-portrait    {
+    position: absolute;
+    bottom: 0;
+    right: -40px;
+    top: auto;
+    transform: none;
+    width: 280px;
+  }
+}
+
+/* ----------- CONTACT PAGE ----------- */
+.contact-wrap {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: calc(100vh - 132px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contact-title {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  margin-bottom: 40px;
+  line-height: 1.3;
+}
+
+.contact-form label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 6px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #d0cdc7;
+  padding: 8px 0;
+  font-family: var(--font);
+  font-size: 12px;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  margin-bottom: 28px;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--ink);
+}
+
+.contact-form textarea {
+  resize: none;
+  height: 100px;
+}
+
+.contact-form .btn-send {
+  font-family: var(--font);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--ink);
+  border: none;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 8px;
+}
+
+.contact-form .btn-send:hover { opacity: 0.75; }
+
+/* Contact page social/footer */
+.contact-footer {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-footer .social { display: flex; gap: 16px; }
+
+.contact-footer svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--mid);
+  transition: fill 0.2s;
+}
+
+.contact-footer a:hover svg { fill: var(--ink); }
+
+.contact-footer .email {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--mid);
+  transition: color 0.2s;
+}
+
+.contact-footer .email:hover { color: var(--ink); }
+
+/* ----------- MOBILE NAVBAR ----------- */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--bg);
+  z-index: 100;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.mobile-logo img {
+  height: 16px;
+  width: auto;
+}
+
+/* Hamburger */
+.burger {
+  width: 24px;
+  height: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.burger span {
+  display: block;
+  height: 1px;
+  background: var(--ink);
+  transition: transform 0.3s var(--ease), opacity 0.3s;
+}
+
+.burger.is-open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.burger.is-open span:nth-child(2) { opacity: 0; }
+.burger.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* Mobile menu — full screen overlay */
+.mobile-menu {
+  position: fixed;
+  inset: 56px 0 0;
+  background: var(--bg);
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;          /* no gap — padding on items controls spacing */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+}
+
+.mobile-menu.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mobile-menu a,
+.mobile-menu .m-toggle {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mobile-menu a:hover,
+.mobile-menu a.active,
+.mobile-menu .m-toggle:hover { color: var(--ink); }
+
+/* Work submenu inside mobile overlay */
+.mobile-sub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition:
+    max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity    0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-sub.is-open {
+  max-height: 260px;
+  opacity: 1;
+}
+
+.mobile-sub-inner {
+  display: contents; /* transparent wrapper — doesn't affect layout */
+}
+
+.mobile-sub a {
+  font-size: 11px;
+  color: var(--mid);
+  letter-spacing: 0.14em;
+  padding: 7px 0;
+  display: block;
+}
+
+.mobile-sub a:hover,
+.mobile-sub a.active { color: var(--ink); }
+
+/* Chevron on Work toggle */
+.m-chevron {
+  display: inline-block;
+  font-style: normal;
+  font-size: 11px;
+  transition: transform 0.4s var(--ease);
+  line-height: 1;
+  color: var(--mid);
+}
+
+.m-toggle.is-open .m-chevron {
+  transform: rotate(90deg);
+}
+
+/* Social icons in mobile menu */
+.mobile-social {
+  display: flex;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.mobile-social a {
+  color: var(--mid);
+  transition: color 0.2s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-social a:hover { color: var(--ink); }
+.mobile-social svg { width: 18px; height: 18px; }
+
+/* ----------- RESPONSIVE ----------- */
+
+/* About — tablet */
+@media (max-width: 960px) {
+  .about-wrap     { padding-right: 280px; }
+  .about-portrait { width: 260px; }
+}
+
+@media (max-width: 768px) {
+  /* Hide desktop sidebar, show mobile nav */
+  .sidebar     { display: none; }
+  .site-copy   { display: none; }
+  .mobile-nav  { display: flex; }
+
+  /* All pages: full width, top clearance for mobile nav */
+  .main-content {
+    margin-left: 0;
+    padding: 72px 24px 60px;
+  }
+
+  /* About page: remove right padding so portrait can reach screen edge */
+  .about-page .main-content {
+    padding-right: 0;
+  }
+
+  /* Galleries */
+  .gallery-grid        { column-count: 2; column-gap: 4px; }
+  .gallery-grid.cols-2 { column-count: 2; }
+  .gallery-grid figure { margin-bottom: 12px; }
+
+  /* Modal */
+  .modal-bar    { padding: 16px 20px; }
+  .modal-stage  { padding: 0; align-items: stretch; }
+  .modal-footer { padding: 14px 20px; }
+  /* Force image to fill full width on mobile */
+  .modal-img    { width: 100%; height: 100%; object-fit: contain; }
+
+  /* Enable scroll on about page */
+  .about-page { overflow-y: auto; }
+
+  /* About — portrait on top, text below */
+  .about-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0 0 60px; /* no side padding — portrait needs to reach right edge */
+    min-height: auto;
+  }
+
+  .about-text {
+    width: 100%;
+    max-width: 100%;
+    padding: 32px 24px 0; /* 24px matches nav */
+  }
+
+  /* Portrait: right edge flush with viewport */
+  .about-portrait {
+    position: relative;
+    top: auto;
+    right: 0;
+    bottom: auto;
+    transform: none;
+    width: 42%;
+    overflow: visible;
+    order: -1;
+    align-self: flex-end;
+  }
+
+  .about-portrait img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Contact */
+  .contact-wrap {
+    min-height: calc(100vh - 56px);
+    padding: 0 24px;
+    justify-content: center;
+  }
+
+  .contact-title { font-size: 18px; }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid,
+  .gallery-grid.cols-2 { column-count: 1; }
+
+  .modal-stage { padding: 0; }
+
+  /* portrait already full-width at 768px, nothing to override */
+}
