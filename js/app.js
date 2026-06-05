@@ -84,6 +84,8 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
+var _modalTimer = null;
+
 function showModalImage(index) {
   if (!modalImg || !modalImages.length) return;
   var item = modalImages[index];
@@ -94,17 +96,17 @@ function showModalImage(index) {
     modalCount.textContent = (index + 1) + ' / ' + modalImages.length;
   }
 
-  /* Fade out → swap src → fade in.
-     This prevents the same image flashing when navigating quickly,
-     because the src change happens after the element is already invisible. */
-  modalImg.style.transition = 'opacity 0.15s ease';
-  modalImg.style.opacity    = '0';
+  /* Cancel any in-flight swap from a previous fast click */
+  if (_modalTimer) { clearTimeout(_modalTimer); _modalTimer = null; }
 
-  setTimeout(function () {
-    modalImg.src       = item.src;
-    modalImg.className = 'modal-img ' + item.orient;
-    modalImg.style.opacity = '1';
-  }, 160);
+  /* Swap src instantly (no fade) — just re-trigger the CSS fadeModal animation */
+  modalImg.src       = item.src;
+  modalImg.className = 'modal-img ' + item.orient;
+
+  /* Force animation restart */
+  modalImg.style.animation = 'none';
+  void modalImg.offsetWidth;
+  modalImg.style.animation = '';
 }
 
 function modalNext() {
