@@ -49,7 +49,7 @@
   var sidebar =
     '<nav class="sidebar" id="sidebar">' +
 
-      '<a class="sidebar-logo" href="index.html">' +
+      '<a class="sidebar-logo" href="/">' +
         '<img src="public/damlogo.svg" alt="Damian Grela">' +
       '</a>' +
 
@@ -62,16 +62,16 @@
             'Work <em class="nav-arrow">›</em>' +
           '</span>' +
           '<div class="nav-sub' + (subIsOpen ? ' is-open' : '') + '" id="work-sub">' +
-            '<a href="street.html" class="' + active('street') + '">Street</a>' +
-            '<a href="iceland.html" class="' + active('iceland') + '">Iceland</a>' +
-            '<a href="australia.html" class="' + active('australia') + '">Australia</a>' +
-            '<a href="ukraine.html" class="' + active('ukraine') + '">Ukraine</a>' +
-            '<a href="reportage.html" class="' + active('reportage') + '">Reportage</a>' +
+            '<a href="/street" class="' + active('street') + '">Street</a>' +
+            '<a href="/iceland" class="' + active('iceland') + '">Iceland</a>' +
+            '<a href="/australia" class="' + active('australia') + '">Australia</a>' +
+            '<a href="/ukraine" class="' + active('ukraine') + '">Ukraine</a>' +
+            '<a href="/reportage" class="' + active('reportage') + '">Reportage</a>' +
           '</div>' +
         '</div>' +
 
-        '<a class="nav-link' + active('about') + '" href="about.html">About</a>' +
-        '<a class="nav-link' + active('contact') + '" href="contact.html">Contact</a>' +
+        '<a class="nav-link' + active('about') + '" href="/about">About</a>' +
+        '<a class="nav-link' + active('contact') + '" href="/contact">Contact</a>' +
 
       '</div>' +
 
@@ -88,7 +88,7 @@
 
   var mobileNav =
     '<nav class="mobile-nav" id="mobile-nav">' +
-      '<a class="mobile-logo" href="index.html"><img src="public/damlogo.svg" alt="Damian Grela"></a>' +
+      '<a class="mobile-logo" href="/"><img src="public/damlogo.svg" alt="Damian Grela"></a>' +
       '<button class="burger" id="burger" aria-label="Menu">' +
         '<span></span><span></span><span></span>' +
       '</button>' +
@@ -97,15 +97,15 @@
       '<span class="m-toggle" id="m-work-toggle">Work <em class="m-chevron">›</em></span>' +
       '<div class="mobile-sub" id="m-work-sub">' +
         '<div class="mobile-sub-inner">' +
-          '<a href="street.html" class="' + active('street') + '">Street</a>' +
-          '<a href="iceland.html" class="' + active('iceland') + '">Iceland</a>' +
-          '<a href="australia.html" class="' + active('australia') + '">Australia</a>' +
-          '<a href="ukraine.html" class="' + active('ukraine') + '">Ukraine</a>' +
-          '<a href="reportage.html" class="' + active('reportage') + '">Reportage</a>' +
+          '<a href="/street" class="' + active('street') + '">Street</a>' +
+          '<a href="/iceland" class="' + active('iceland') + '">Iceland</a>' +
+          '<a href="/australia" class="' + active('australia') + '">Australia</a>' +
+          '<a href="/ukraine" class="' + active('ukraine') + '">Ukraine</a>' +
+          '<a href="/reportage" class="' + active('reportage') + '">Reportage</a>' +
         '</div>' +
       '</div>' +
-      '<a href="about.html" class="' + active('about') + '">About</a>' +
-      '<a href="contact.html" class="' + active('contact') + '">Contact</a>' +
+      '<a href="/about" class="' + active('about') + '">About</a>' +
+      '<a href="/contact" class="' + active('contact') + '">Contact</a>' +
       mobileSocial +
     '</div>';
 
