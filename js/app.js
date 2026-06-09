@@ -15,10 +15,15 @@
 window.addEventListener('load', function () {
   var loader = document.getElementById('loader');
   if (!loader) return;
-  loader.classList.add('is-hidden');
+  /* Wait at least 1.6s so the draw animation always completes */
+  var elapsed = performance.now();
+  var remaining = Math.max(0, 1900 - elapsed);
   setTimeout(function () {
-    if (loader.parentNode) loader.parentNode.removeChild(loader);
-  }, 700);
+    loader.classList.add('is-hidden');
+    setTimeout(function () {
+      if (loader.parentNode) loader.parentNode.removeChild(loader);
+    }, 750);
+  }, remaining);
 });
 
 /* =========================================================

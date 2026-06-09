@@ -99,19 +99,28 @@
   </div>
   <p class="home-hint" id="home-hint">Click to advance</p>
 
-  <div class="loader" id="loader"><div class="loader-dot"></div></div>
+  <div class="loader" id="loader">
+    <div class="loader-wrap">
+      <img class="loader-mark" src="public/dglogo.svg" alt="">
+      <svg class="loader-ring" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="48" cy="48" r="44"/>
+      </svg>
+    </div>
+  </div>
   <p class="site-copy">©Damian Grela 2026</p>
 
   <script>
   (function () {
 
-    /* Hide loader immediately — homepage slideshow handles its own timing */
+    /* Hide loader after draw animation completes (~1.9s total) */
     var loader = document.getElementById('loader');
     if (loader) {
-      loader.classList.add('is-hidden');
       setTimeout(function () {
-        if (loader.parentNode) loader.parentNode.removeChild(loader);
-      }, 700);
+        loader.classList.add('is-hidden');
+        setTimeout(function () {
+          if (loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 750);
+      }, 2200);
     }
 
     var all = [
