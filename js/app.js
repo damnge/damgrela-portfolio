@@ -17,7 +17,7 @@ window.addEventListener('load', function () {
   if (!loader) return;
   /* Wait at least 1.6s so the draw animation always completes */
   var elapsed = performance.now();
-  var remaining = Math.max(0, 1900 - elapsed);
+  var remaining = Math.max(0, 1500 - elapsed);
   setTimeout(function () {
     loader.classList.add('is-hidden');
     setTimeout(function () {
